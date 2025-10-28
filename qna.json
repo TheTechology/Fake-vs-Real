@@ -1,0 +1,62 @@
+[
+  {
+    "id": 0,
+    "type": "fake",
+    "question": "Știre: „Extratereștrii au aterizat în parcul central din Adjud.” E adevărat?",
+    "answer": "FALS. Nicio sursă oficială (MAI/IGSU/Observator astronomic) nu confirmă. Titlul senzațional nu are autor identificabil și folosește imagini vechi de pe internet."
+  },
+  {
+    "id": 1,
+    "type": "real",
+    "question": "Anunț: „Biblioteca municipală prelungește programul sâmbăta.” E adevărat?",
+    "answer": "ADEVARAT. Verifică site-ul/FB oficial al bibliotecii sau afișul din instituție. Informația e publicată de sursa oficială."
+  },
+  {
+    "id": 2,
+    "type": "fake",
+    "question": "Reclamă: „Telefon GRATIS pentru toată lumea, azi!” E adevărat?",
+    "answer": "FALS. Promisiune nerealistă, cere date personale/card. Semnele clasice: graba („azi”), link scurt, erori de scriere, domeniu dubios."
+  },
+  {
+    "id": 3,
+    "type": "real",
+    "question": "Știre: „Elevii din Adjud expun proiecte la concursul județean.” E adevărat?",
+    "answer": "ADEVARAT. Confirmat pe pagina inspectoratului școlar și a școlilor participante; există poze și comunicate oficiale."
+  },
+  {
+    "id": 4,
+    "type": "fake",
+    "question": "Anunț: „Câștigă bani ușor lucrând 10 minute/zi – fără vârstă!” E adevărat?",
+    "answer": "FALS. Schema clasică de înșelăciune; cere taxe inițiale sau recrutare piramidală. Verifică firma în Registrul Comerțului și recenziile reale."
+  },
+  {
+    "id": 5,
+    "type": "real",
+    "question": "Comunicat: „S-au plantat 200 de puieți în parc.” E adevărat?",
+    "answer": "ADEVARAT. Confirmă pe site-ul Primăriei/ONG-ului organizator; există fotografii, listă de parteneri și locație exactă."
+  },
+  {
+    "id": 6,
+    "type": "fake",
+    "question": "Postare virală: „Vacanța se prelungește, a zis un prieten pe Facebook.” E adevărat?",
+    "answer": "FALS. Calendarul școlar se schimbă doar prin ordin al Ministerului Educației. Verifică pe edu.ro sau la școală."
+  },
+  {
+    "id": 7,
+    "type": "real",
+    "question": "Anunț: „Atelier – Harta Inovației la Orange Digital Center Adjud.” E adevărat?",
+    "answer": "ADEVARAT. Eveniment oficial, anunțat de Asociația Grupul Verde/parteneri pe canalele oficiale."
+  },
+  {
+    "id": 8,
+    "type": "fake",
+    "question": "Reclamă: „Pastila-minune care te slăbește 10 kg într-o săptămână.” E adevărat?",
+    "answer": "FALS. Promisiune medicală nerealistă; lipsesc studii clinice și avize. Cere sfatul unui medic/adult de încredere."
+  },
+  {
+    "id": 9,
+    "type": "real",
+    "question": "Știre: „Copiii au creat roboți de hârtie la atelier.” E adevărat?",
+    "answer": "ADEVARAT. Dovezi: fotografii de la eveniment, postări oficiale, nume de coordonatori și locație clară."
+  }
+]
