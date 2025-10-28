@@ -1,137 +1,113 @@
 <!doctype html>
 <html lang="ro">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>WebAR ArUco Q&A – Fake vs. Real | Asociația Grupul Verde</title>
-<style>
-  html, body { margin:0; padding:0; background:#0f1220; color:#fff; font-family: system-ui, Arial, sans-serif; }
-  header { padding:12px 16px; background:#151935; border-bottom:1px solid #2a2f55; position:sticky; top:0; z-index:2; }
-  h1 { font-size:18px; margin:0; }
-  #app { padding:0; }
-  #viewport { position:relative; width:100%; max-height:72vh; background:#000; }
-  video, canvas { width:100%; height:auto; display:block; }
-  #panel { padding:12px 16px; }
-  .card { background:#151935; border:1px solid #2a2f55; border-radius:12px; padding:12px 14px; margin-bottom:10px; }
-  .badge { display:inline-block; padding:2px 8px; border-radius:999px; font-size:12px; letter-spacing:.3px; margin-bottom:8px; }
-  .badge.fake { background:#3a0b0b; color:#ffb3b3; border:1px solid #5a1a1a; }
-  .badge.real { background:#0b3a1a; color:#b3ffcf; border:1px solid #1a5a33; }
-  .q { font-weight:600; margin:0 0 6px 0; }
-  .a { margin:0; display:none; }
-  .btn { margin-top:8px; background:#2a2f55; border:1px solid #3c4181; color:#dfe3ff; border-radius:8px; padding:8px 10px; font-weight:600; cursor:pointer; }
-  .hint { color:#9aa3ff; font-size:12px; margin-top:6px; opacity:.85; }
-  .detected { color:#88ff88; }
-  .warning { color:#ffcc88; }
-</style>
+  <meta charset="utf-8">
+  <title>Fake vs Real – AR pe marker</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- A-Frame + AR.js (CDN) -->
+  <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+  <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script>
+  <style>body,html{margin:0;overflow:hidden}</style>
 </head>
 <body>
-<header>
-  <h1>WebAR – Detectare markere ArUco: întrebare + răspuns</h1>
-</header>
+  <a-scene
+    embedded
+    vr-mode-ui="enabled: false"
+    renderer="logarithmicDepthBuffer: true; antialias: true;"
+    arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;"
+  >
 
-<div id="app">
-  <div id="viewport">
-    <video id="video" autoplay playsinline></video>
-    <canvas id="canvas"></canvas>
-  </div>
-  <div id="panel">
-    <div class="hint">Apropie un <b>marker ArUco</b> (ID 0–9). Dacă nu vezi nimic, acordă permisiunea la cameră și verifică lumina.</div>
-    <div id="cards"></div>
-  </div>
-</div>
+    <!-- Cameră -->
+    <a-entity camera></a-entity>
 
-<script src="https://unpkg.com/js-aruco@1.2.0/build/aruco.min.js"></script>
-<script>
-  // Încărcăm Q&A din qna.json
-  let QNA = [];
-  fetch('qna.json').then(r => r.json()).then(data => { QNA = data; });
+    <!--
+      Folosim markere de tip "barcode" (valorile 0..9).
+      Tipărește marker-ele „AR.js barcode markers 0–9” (caută „AR.js barcode markers PDF”).
+      0,2,4,6,8 = FALS (roșu) | 1,3,5,7,9 = ADEVĂRAT (verde)
+    -->
 
-  const video = document.getElementById('video');
-  const canvas = document.getElementById('canvas');
-  const ctx = canvas.getContext('2d');
-  const cardsRoot = document.getElementById('cards');
+    <!-- ID 0 -->
+    <a-marker type="barcode" value="0">
+      <a-entity position="0 0 0">
+        <a-plane position="0 0.5 0" rotation="-90 0 0" width="2.2" height="0.9" color="#3a0b0b" opacity="0.85"></a-plane>
+        <a-text value="FALS: „Extratereștrii în parc” – verifică sursa!" position="-1.05 0.5 0.01" rotation="-90 0 0" color="#ffcccc" width="2.1"></a-text>
+      </a-entity>
+    </a-marker>
 
-  function renderCard(item){
-    const wrap = document.createElement('div');
-    wrap.className = 'card';
-    const badge = document.createElement('div');
-    badge.className = 'badge ' + (item.type === 'real' ? 'real' : 'fake');
-    badge.textContent = (item.type === 'real' ? 'ȘTIRE ADEVĂRATĂ' : 'ȘTIRE FALSĂ') + ' • Marker ID ' + item.id;
-    const q = document.createElement('p');
-    q.className = 'q';
-    q.textContent = item.question;
-    const a = document.createElement('p');
-    a.className = 'a';
-    a.textContent = item.answer;
-    const btn = document.createElement('button');
-    btn.className = 'btn';
-    btn.textContent = 'Afișează răspunsul';
-    btn.addEventListener('click', () => {
-      a.style.display = a.style.display === 'none' ? 'block' : 'none';
-      btn.textContent = (a.style.display === 'none') ? 'Afișează răspunsul' : 'Ascunde răspunsul';
-    });
-    wrap.appendChild(badge);
-    wrap.appendChild(q);
-    wrap.appendChild(a);
-    wrap.appendChild(btn);
-    return wrap;
-  }
+    <!-- ID 1 -->
+    <a-marker type="barcode" value="1">
+      <a-entity position="0 0 0">
+        <a-plane position="0 0.5 0" rotation="-90 0 0" width="2.2" height="0.9" color="#0b3a1a" opacity="0.85"></a-plane>
+        <a-text value="ADEVARAT: Program extins la bibliotecă – vezi pagina oficială" position="-1.05 0.5 0.01" rotation="-90 0 0" color="#ccffdd" width="2.1"></a-text>
+      </a-entity>
+    </a-marker>
 
-  function upsertCardById(id){
-    const item = QNA.find(x => x.id === id);
-    if (!item) return;
-    // dacă există deja prima carte pentru acest ID, nu mai adăugăm dubluri
-    const exists = [...cardsRoot.children].some(div => div.querySelector('.badge')?.textContent?.includes('ID '+id));
-    if (exists) return;
-    cardsRoot.prepend(renderCard(item));
-  }
+    <!-- ID 2 -->
+    <a-marker type="barcode" value="2">
+      <a-entity>
+        <a-plane position="0 0.5 0" rotation="-90 0 0" width="2.2" height="0.9" color="#3a0b0b" opacity="0.85"></a-plane>
+        <a-text value="FALS: „Telefon gratis pentru toți” – semne clasice de scam" position="-1.05 0.5 0.01" rotation="-90 0 0" color="#ffcccc" width="2.1"></a-text>
+      </a-entity>
+    </a-marker>
 
-  // Camera
-  navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' }, audio:false })
-    .then(stream => { video.srcObject = stream; video.play(); })
-    .catch(err => {
-      const warn = document.createElement('div');
-      warn.className = 'hint warning';
-      warn.textContent = 'Nu am putut porni camera: ' + err;
-      document.getElementById('panel').prepend(warn);
-    });
+    <!-- ID 3 -->
+    <a-marker type="barcode" value="3">
+      <a-entity>
+        <a-plane position="0 0.5 0" rotation="-90 0 0" width="2.2" height="0.9" color="#0b3a1a" opacity="0.85"></a-plane>
+        <a-text value="ADEVARAT: Expoziție elevi – confirmat de școală/ISJ" position="-1.05 0.5 0.01" rotation="-90 0 0" color="#ccffdd" width="2.1"></a-text>
+      </a-entity>
+    </a-marker>
 
-  video.addEventListener('play', () => {
-    canvas.width = video.videoWidth || 640;
-    canvas.height = video.videoHeight || 480;
-    const detector = new AR.Detector();
+    <!-- ID 4 -->
+    <a-marker type="barcode" value="4">
+      <a-entity>
+        <a-plane position="0 0.5 0" rotation="-90 0 0" width="2.2" height="0.9" color="#3a0b0b" opacity="0.85"></a-plane>
+        <a-text value="FALS: „Bani ușori 10 min/zi” – tipar de piramidă" position="-1.05 0.5 0.01" rotation="-90 0 0" color="#ffcccc" width="2.1"></a-text>
+      </a-entity>
+    </a-marker>
 
-    function loop(){
-      if (video.paused || video.ended) return;
-      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-      const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-      const markers = detector.detect(imageData);
+    <!-- ID 5 -->
+    <a-marker type="barcode" value="5">
+      <a-entity>
+        <a-plane position="0 0.5 0" rotation="-90 0 0" width="2.2" height="0.9" color="#0b3a1a" opacity="0.85"></a-plane>
+        <a-text value="ADEVARAT: Plantare de puieți – comunicat oficial + poze" position="-1.05 0.5 0.01" rotation="-90 0 0" color="#ccffdd" width="2.1"></a-text>
+      </a-entity>
+    </a-marker>
 
-      // desenăm contur pe marker
-      markers.forEach(m => {
-        const corners = m.corners;
-        ctx.beginPath();
-        ctx.moveTo(corners[0].x, corners[0].y);
-        for (let i = 1; i < corners.length; i++) ctx.lineTo(corners[i].x, corners[i].y);
-        ctx.closePath();
-        ctx.lineWidth = 3;
-        ctx.strokeStyle = '#00ff88';
-        ctx.stroke();
+    <!-- ID 6 -->
+    <a-marker type="barcode" value="6">
+      <a-entity>
+        <a-plane position="0 0.5 0" rotation="-90 0 0" width="2.2" height="0.9" color="#3a0b0b" opacity="0.85"></a-plane>
+        <a-text value="FALS: „Vacanță prelungită” – verifică doar pe edu.ro" position="-1.05 0.5 0.01" rotation="-90 0 0" color="#ffcccc" width="2.1"></a-text>
+      </a-entity>
+    </a-marker>
 
-        // afișăm ID pe video
-        const id = m.id;
-        ctx.font = '16px system-ui, Arial';
-        ctx.fillStyle = 'rgba(0,0,0,.6)';
-        ctx.fillRect(corners[0].x, corners[0].y - 22, 120, 22);
-        ctx.fillStyle = '#fff';
-        ctx.fillText('Marker ID ' + id, corners[0].x + 6, corners[0].y - 6);
-        upsertCardById(id);
-      });
+    <!-- ID 7 -->
+    <a-marker type="barcode" value="7">
+      <a-entity>
+        <a-plane position="0 0.5 0" rotation="-90 0 0" width="2.2" height="0.9" color="#0b3a1a" opacity="0.85"></a-plane>
+        <a-text value="ADEVARAT: Atelier – Harta Inovației (anunț oficial)" position="-1.05 0.5 0.01" rotation="-90 0 0" color="#ccffdd" width="2.1"></a-text>
+      </a-entity>
+    </a-marker>
 
-      requestAnimationFrame(loop);
-    }
-    loop();
-  });
-</script>
+    <!-- ID 8 -->
+    <a-marker type="barcode" value="8">
+      <a-entity>
+        <a-plane position="0 0.5 0" rotation="-90 0 0" width="2.2" height="0.9" color="#3a0b0b" opacity="0.85"></a-plane>
+        <a-text value="FALS: „Pastila-minune” – fără studii/avize, cere un adult" position="-1.05 0.5 0.01" rotation="-90 0 0" color="#ffcccc" width="2.1"></a-text>
+      </a-entity>
+    </a-marker>
+
+    <!-- ID 9 -->
+    <a-marker type="barcode" value="9">
+      <a-entity>
+        <a-plane position="0 0.5 0" rotation="-90 0 0" width="2.2" height="0.9" color="#0b3a1a" opacity="0.85"></a-plane>
+        <a-text value="ADEVARAT: Roboți de hârtie – postări + coordonatori" position="-1.05 0.5 0.01" rotation="-90 0 0" color="#ccffdd" width="2.1"></a-text>
+      </a-entity>
+    </a-marker>
+
+    <!-- fundalul camerei -->
+    <a-entity arjs-anchor></a-entity>
+  </a-scene>
 </body>
 </html>
